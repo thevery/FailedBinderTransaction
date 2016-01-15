@@ -10,25 +10,15 @@
     tools:context="com.example.thevery.failedbindertransaction.MainActivity">
 
     <Button
-        android:id="@+id/run_query_button"
+        android:id="@+id/start_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="33dp"
         android:layout_marginStart="33dp"
         android:layout_marginTop="40dp"
-        android:text="Run query"
+        android:text="Start"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
-
-    <Button
-        android:id="@+id/kill_cp_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="31dp"
-        android:text="Kill cp"
-        android:layout_below="@+id/run_query_button"
-        android:layout_alignLeft="@+id/run_query_button"
-        android:layout_alignStart="@+id/run_query_button" />
 
 </RelativeLayout>

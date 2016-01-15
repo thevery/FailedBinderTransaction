@@ -3,12 +3,10 @@ package com.example.thevery.failedbindertransaction;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -17,23 +15,23 @@ import java.io.InputStreamReader;
 public class MainActivity extends AppCompatActivity {
     public static final String TAG = "FBT";
 
+    private int backCounter = 100;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        findViewById(R.id.run_query_button).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.start_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                runQuery();
-
-            }
-        });
-
-        findViewById(R.id.kill_cp_button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                killCp();
+                Toast.makeText(MainActivity.this, "start", Toast.LENGTH_SHORT).show();
+                while (backCounter-- > 0) {
+                    Log.d(MainActivity.TAG, "MainActivity: backCounter = " + backCounter);
+                    runQuery();
+                    SystemClock.sleep(100);
+                    killCp();
+                }
             }
         });
     }
@@ -46,6 +44,11 @@ public class MainActivity extends AppCompatActivity {
         if (cursor != null && cursor.moveToFirst()) {
             Log.d(TAG, "getCount() = " + cursor.getCount());
             Log.d(TAG, "getInt(0) = " + cursor.getInt(0));
+            Log.d(TAG, "++ cursor");
+            Toast.makeText(this, "query ok", Toast.LENGTH_SHORT).show();
+        } else {
+            Log.d(TAG, "!! cursor = " + cursor);
+            Toast.makeText(this, "query failed", Toast.LENGTH_SHORT).show();
         }
         if (cursor != null) {
             cursor.close();
