@@ -28,7 +28,11 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "start", Toast.LENGTH_SHORT).show();
                 while (backCounter-- > 0) {
                     Log.d(MainActivity.TAG, "MainActivity: backCounter = " + backCounter);
-                    runQuery();
+                    if (!runQuery()) {
+                        SystemClock.sleep(100);
+                        boolean result = runQuery();
+                        Log.d(MainActivity.TAG, "MainActivity: second try = " + result);
+                    }
                     SystemClock.sleep(100);
                     killCp();
                 }
@@ -36,23 +40,27 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void runQuery() {
+    private boolean runQuery() {
         final int pid = android.os.Process.myPid();
         Log.d(MainActivity.TAG, "MainActivity: pid = " + pid);
 
+        final boolean result;
         final Cursor cursor = getContentResolver().query(MyContentProvider.CONTENT_URI, null, null, null, null);
         if (cursor != null && cursor.moveToFirst()) {
             Log.d(TAG, "getCount() = " + cursor.getCount());
             Log.d(TAG, "getInt(0) = " + cursor.getInt(0));
             Log.d(TAG, "++ cursor");
             Toast.makeText(this, "query ok", Toast.LENGTH_SHORT).show();
+            result = true;
         } else {
             Log.d(TAG, "!! cursor = " + cursor);
             Toast.makeText(this, "query failed", Toast.LENGTH_SHORT).show();
+            result = false;
         }
         if (cursor != null) {
             cursor.close();
         }
+        return result;
     }
 
     private void killCp() {
