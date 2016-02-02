@@ -27,7 +27,7 @@ public class MyContentProvider extends ContentProvider {
 
     private void sleep() {
         System.out.println("MyContentProvider.sleep>>>");
-        sleep();
+        SystemClock.sleep(500);
         System.out.println("MyContentProvider.sleep<<<");
     }
 
