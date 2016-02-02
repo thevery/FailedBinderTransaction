@@ -1,5 +1,6 @@
 package com.example.thevery.failedbindertransaction;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
@@ -30,33 +31,36 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         findViewById(R.id.btn3).setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
-                for (int i = 0; i < 10; i++) {
-                    final int finalI = i;
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            System.out.println("MyContentProvider.getContentResolver().query>>>");
-                            Cursor cursor = getContentResolver()
-                                    .query(MyContentProvider.CONTENT_URI, null, null, null, null);
-                            System.out.println("MyContentProvider.getContentResolver().query<<<");
-                            if (cursor == null) {
-                                Log.d("FBT", "count = " + finalI);
-                            } else {
-                                Log.d("NOFBT", "count = " + finalI);
-                            }
-//                            checkCursor(cursor);
-//                        if (cursor != null) {
-                            cursor.close();
-//                        }
-                        }
-                    }).start();
-                }
+                MyIntentService1.start(MainActivity.this);
+                makeQuery(MainActivity.this);
 //                getSupportLoaderManager().restartLoader(0, null, new CursorLoaderCallback());
 
             }
         });
+    }
+
+    public static void makeQuery(final Context context) {
+        for (int i = 0; i < 2; i++) {
+            final int finalI = i;
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    System.out.println("MyContentProvider.getContentResolver().query>>>");
+                    Cursor cursor = context.getContentResolver()
+                            .query(MyContentProvider.CONTENT_URI, null, null, null, null);
+                    System.out.println("MyContentProvider.getContentResolver().query<<<");
+                    if (cursor == null) {
+                        Log.d("FBT", "count = " + finalI);
+                    } else {
+                        Log.d("NOFBT", "count = " + finalI);
+                        cursor.close();
+                    }
+                }
+            }).start();
+        }
     }
 
     private class CursorLoaderCallback implements LoaderManager.LoaderCallbacks<Cursor> {

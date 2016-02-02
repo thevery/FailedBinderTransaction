@@ -22,13 +22,16 @@ public class MyIntentService1 extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, final int startId) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                SystemClock.sleep(5000);
-                stopSelf(startId);
-            }
-        }).start();
+        System.out.println("MyContentProvider.onStartCommand>>>");
+        MainActivity.makeQuery(this);
+        System.out.println("MyContentProvider.onStartCommand<<<");
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                SystemClock.sleep(5000);
+//                stopSelf(startId);
+//            }
+//        }).start();
         return super.onStartCommand(intent, flags, startId);
     }
 }
