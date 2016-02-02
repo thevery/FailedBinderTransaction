@@ -17,11 +17,22 @@
         </activity>
 
         <provider
-            android:process=":cp"
             android:name=".MyContentProvider"
             android:authorities="com.example.thevery.failedbindertransaction"
             android:enabled="true"
-            android:exported="true"/>
+            android:exported="true"
+            android:process=":dms" />
+
+        <service
+            android:name=".MyIntentService1"
+            android:exported="false"
+            android:process=":dms" />
+
+        <service
+            android:name=".MyIntentService2"
+            android:exported="false"
+            android:process=":fbt_proc_2" />
+
     </application>
 
 </manifest>
