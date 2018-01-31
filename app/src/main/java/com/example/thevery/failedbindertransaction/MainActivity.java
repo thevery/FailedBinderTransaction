@@ -1,7 +1,10 @@
 package com.example.thevery.failedbindertransaction;
 
+import android.content.ContentProviderClient;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.RemoteException;
+import android.os.SystemClock;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -16,7 +19,33 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        getSupportLoaderManager().restartLoader(0, null, new CursorLoaderCallback());
+        start();
+    }
+
+    private void start() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+//                ContentProviderClient client = getContentResolver().acquireUnstableContentProviderClient(MyContentProvider.CONTENT_URI);
+                for (int i = 0; i < 1000; i++) {
+                    try {
+                        System.out.println("i = " + i);
+                        SystemClock.sleep(100);
+//                        Cursor cursor = client.query(MyContentProvider.CONTENT_URI, null, null, null, null);
+//                        System.out.println("cursor.getCount() = " + cursor.getCount());
+//                        cursor.close();
+//                        Cursor cursor = getContentResolver().call((MyContentProvider.CONTENT_URI, "hello", null, null, null);
+                        Bundle hello = getContentResolver().call(MyContentProvider.CONTENT_URI, "hello", String.valueOf(i), null);
+//                    System.out.println("hello = " + hello.getString("time"));
+                        System.out.println("hello = " + hello);
+                    } catch (Exception e) {
+                        System.out.println("exception!");
+                        e.printStackTrace();
+//                        client = getContentResolver().acquireUnstableContentProviderClient(MyContentProvider.CONTENT_URI);
+                    }
+                }
+            }
+        }).start();
     }
 
     private class CursorLoaderCallback implements LoaderManager.LoaderCallbacks<Cursor> {
